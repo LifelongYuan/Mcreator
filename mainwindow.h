@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+class QDockWidget;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -10,5 +10,8 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+private:
+    QDockWidget * Top_Dock;
+    QDockWidget *Right_Dock;
 };
 #endif // MAINWINDOW_H
