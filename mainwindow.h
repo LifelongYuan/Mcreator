@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 class QDockWidget;
+class MainModel;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -10,8 +11,12 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void DrawScene();
+public slots:
+    void open();
 private:
     QDockWidget * Top_Dock;
     QDockWidget *Right_Dock;
+    MainModel * model;
 };
 #endif // MAINWINDOW_H

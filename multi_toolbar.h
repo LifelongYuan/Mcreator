@@ -3,6 +3,7 @@
 
 #include <QTabWidget>
 #include<QWidget>
+#include<QToolBar>
 class QListWidget;
 class QWidget;
 class QToolBar;
@@ -15,7 +16,7 @@ public:
     Multi_Toolbar(QWidget *parent = nullptr);
     void create_tool_bar();
     void create_file_tb();
-private:
+public:
     File_tb *file_tb;
     Filter_tb *filter_tb;
     QMap<QString,QToolBar*> * Top_tb_map;

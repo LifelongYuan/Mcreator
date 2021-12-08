@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include<QApplication>
 #include<QFileDialog>
+#include<QMessageBox>
 File_tb::File_tb(const QString &title, QWidget *parent)
     :QToolBar(title,parent)
 {
@@ -20,8 +21,7 @@ File_tb::File_tb(const QString &title, QWidget *parent)
     Exit_Window->setIcon(QIcon(":Resource/exit.png"));
 
     connect(Exit_Window,SIGNAL(triggered()),this->parentWidget()->parentWidget(),SLOT(close()));
-
-    this->addAction(Open_file);
+//    this->addAction(Open_file);
     this->addAction(Close_file);
     this->addAction(Save_file);
     this->addAction(Exit_Window);
@@ -42,7 +42,7 @@ void File_tb::open_file()
 
                    }
 }
-}
+
 void File_tb::close_file()
 {
 

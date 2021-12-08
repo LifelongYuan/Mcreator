@@ -8,7 +8,7 @@ class File_tb : public QToolBar
     Q_OBJECT
 public:
     File_tb(const QString &title, QWidget *parent = nullptr);
-private:
+public:
     QAction * Open_file;
     QAction *Close_file;
     QAction *Exit_Window;
