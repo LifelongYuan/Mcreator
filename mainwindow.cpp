@@ -26,8 +26,14 @@ MainWindow::MainWindow(QWidget *parent)
    QAction* open = new QAction(tr("&Open"),this);
 
    connect(open,SIGNAL(triggered()),this,SLOT(open()));
-   main_tool_bar->Top_tb_map->value("File")->addAction(open);
    model = new MainModel;
+   main_tool_bar->Top_tb_map->value("File")->addAction(open);
+   QString path_1 = "D:\\浙江大学\\大四学年\\C++\\pro\\2021_11_22\\SketchEditor\\Model\\base.obj";
+//   model->Add_Model_file_from_path(path_1);
+   model_veiw = new ModelView(model);
+//   model_veiw->setModel(model);
+   setCentralWidget(model_veiw);
+
 
 }
 
@@ -39,11 +45,12 @@ void MainWindow::open()
     filedialog->setFileMode(QFileDialog::FileMode::ExistingFiles);
     if(filedialog->exec() == QDialog::Accepted) {
                    QString path = filedialog->selectedFiles()[0];
-                   QString file_full = filedialog->getOpenFileName(this);
-                   QFileInfo file_info = QFileInfo(file_full);
+                   QFileInfo file_info = QFileInfo(path);
                    file_info.fileName();
                    QMessageBox::information(NULL, tr("Path"), tr("You selected ") + path);
                    model->Add_Model_file_from_path(path);
+                   model_veiw->update();
+
 
            } else {
                    QMessageBox::information(NULL, tr("Path"), tr("You didn't select any files."));

@@ -1,5 +1,6 @@
 #include "mainmodel.h"
 #include<QFileInfo>
+#include<QDebug>
 MainModel::MainModel()
 {
 
@@ -15,8 +16,10 @@ uint MainModel::Add_Model_file_from_path(QString FilePath)
     m_GeomModelObject = new GeomModel;
 
 //	m_GeomObject = glmReadOBJ(FilePath.GetBuffer(0));
-    std::string str = FilePath.toStdString();
-    char* ch = (char*)str.c_str();
+//    std::string str = FilePath.toStdString();
+    QTextCodec *code = QTextCodec::codecForName("GB2312");
+     std::string name = code->fromUnicode(FilePath).data();
+    char* ch = (char*)name.c_str();
     m_GeomModelObject->glmReadOBJ(ch);
 
     if(! scalefactor)
@@ -24,7 +27,7 @@ uint MainModel::Add_Model_file_from_path(QString FilePath)
         //Create Unit vectors
 //		scalefactor = glmUnitize( m_GeomObject);
         scalefactor = m_GeomModelObject->glmUnitize();
-
+        qDebug()<<scalefactor;
     }
     else
     {
@@ -56,6 +59,7 @@ uint MainModel::Add_Model_file_from_path(QString FilePath)
         new_model_info->m_ObjectList = m_GeomModelObject->glmList(GLM_SMOOTH | GLM_MATERIAL);
         new_model_info->visibility = true;
         this->model_list.insert(new_model_info->file_name,new_model_info);
+        this->selected_key = new_model_info->file_name;  //auto selected
         mode_status = Success;
     }
     //Nuke the object

@@ -8,6 +8,7 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ccamera.cpp \
     file_tb.cpp \
     filter_tb.cpp \
     geommodel.cpp \
@@ -18,6 +19,7 @@ SOURCES += \
     multi_toolbar.cpp
 
 HEADERS += \
+    ccamera.h \
     file_tb.h \
     filter_tb.h \
     geommodel.h \
@@ -28,7 +30,7 @@ HEADERS += \
 
 LIBS += -lOpengl32 \
         -lglu32 \
-        -lglut32
+        -lglut64
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin

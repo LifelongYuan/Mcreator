@@ -3,6 +3,7 @@
 #include <QModelIndex>
 #include <QVariant>
 #include "geommodel.h"
+#include<QTextCodec>
 enum{Success,Repeat};
 class Model_info
 {
@@ -26,7 +27,6 @@ public:        // impletation of abstract functions
     void Remove_info_from_name(QString file_name);
     QStringList Get_info_name_list();
     ~MainModel();
-
 public:
 
     GeomModel*	m_GeomModelObject;
