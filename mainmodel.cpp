@@ -27,7 +27,6 @@ uint MainModel::Add_Model_file_from_path(QString FilePath)
         //Create Unit vectors
 //		scalefactor = glmUnitize( m_GeomObject);
         scalefactor = m_GeomModelObject->glmUnitize();
-        qDebug()<<scalefactor;
     }
     else
     {
@@ -121,4 +120,17 @@ QStringList MainModel::Get_info_name_list()
         Name_list.append(it.key());
     }
     return Name_list;
+}
+
+QList<uint> MainModel::Get_ID_list()
+{
+    QList<uint> ID_list;
+    QMapIterator<QString, Model_info*>it(model_list);
+
+    while (it.hasNext())
+    {
+        it.next();
+        ID_list.append(it.value()->m_ObjectList);
+    }
+    return ID_list;
 }

@@ -16,7 +16,8 @@ SOURCES += \
     mainmodel.cpp \
     mainwindow.cpp \
     modelview.cpp \
-    multi_toolbar.cpp
+    multi_toolbar.cpp \
+    sidetoolbar.cpp
 
 HEADERS += \
     ccamera.h \
@@ -26,7 +27,8 @@ HEADERS += \
     mainmodel.h \
     mainwindow.h \
     modelview.h \
-    multi_toolbar.h
+    multi_toolbar.h \
+    sidetoolbar.h
 
 LIBS += -lOpengl32 \
         -lglu32 \

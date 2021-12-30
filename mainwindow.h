@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTreeWidget>
 #include "modelview.h"
 class QDockWidget;
 class MainModel;
@@ -20,5 +21,6 @@ private:
     QDockWidget *Right_Dock;
     MainModel * model;
     ModelView * model_veiw;
+
 };
 #endif // MAINWINDOW_H

@@ -13,8 +13,11 @@ class ModelView:public QOpenGLWidget,protected QOpenGLFunctions
     Q_OBJECT
 public:
     ModelView(MainModel* ,QWidget *parent=0);
+    ModelView(const ModelView&);
     void setModel(MainModel*);
     BOOL m_bDrawing=true;
+    BOOL backgroud_enable = true;
+    BOOL coordinate_enable = true;
 protected:
   void initializeGL() override;
   void resizeGL(int w, int h) override;
@@ -29,6 +32,7 @@ protected:
 private:
     MainModel* model;
     CCamera *  camera;
+
 
 };
 

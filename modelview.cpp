@@ -4,6 +4,13 @@ ModelView::ModelView(MainModel* model,QWidget *parent): QOpenGLWidget(parent)
     this->setModel(model);
     this->camera = new CCamera;
 }
+ModelView::ModelView(const ModelView& input):QOpenGLWidget(),QOpenGLFunctions()
+{
+//    this->window_height = input.window_height;
+//    this->window_width = input.window_width;
+    this->model = input.model;
+    this->camera = input.camera;
+}
 void ModelView::setModel(MainModel* model)
 {
     this->model = model;
@@ -57,7 +64,7 @@ void ModelView::paintGL()
     for(int loop = 0; loop < 3; loop++)
     {
         //Initialize backgroud drawing
-        if(loop == 0)
+        if(loop == 0&&backgroud_enable)
         {
             //Set size of background to fill the whole client area
             glViewport(0, 0, window_width, window_height);
@@ -74,7 +81,7 @@ void ModelView::paintGL()
             gluPerspective(45.0f, 1.0, 0.01f, 200.0f);
         }
         //Initialize coordinate indicator drawing
-        if(loop == 2)
+        if(loop == 2&& coordinate_enable)
         {
             glViewport(17*window_width/20, window_height/32,
                         window_width/6, window_height/6);
@@ -89,11 +96,11 @@ void ModelView::paintGL()
         glClear(GL_DEPTH_BUFFER_BIT);
 
         //Draw backgroud
-        if(loop == 0)
+        if(loop == 0&&backgroud_enable)
         {
             glDisable(GL_LIGHTING);
             glBegin(GL_POLYGON);
-                glColor3f(0.0f, 0.0f, 0.36f);
+                glColor3f(0.4f, 0.7f, 0.55f);
                 glVertex2f(window_width, 0);
                 glVertex2f(0, 0);
                 glColor3f(1.0f, 1.0f, 1.0f);
@@ -106,57 +113,19 @@ void ModelView::paintGL()
        if(loop == 1)
         {
             camera->UpdateView(1);
-            if(m_bDrawing)
+            if(model->Get_full_index()!=0)
             {
-                POINT pt;
-//                GetCursorPos(&pt);
-//                ScreenToClient(&pt);
-                pt.x = window_height/2;
-                pt.y = window_width/2;
-                GLint viewport[4];
-                GLdouble modelview[16];
-                GLdouble projection[16];
-                GLfloat winX, winY, winZ;
-                GLdouble posX, posY, posZ;
-
-                glGetDoublev( GL_MODELVIEW_MATRIX, modelview );
-                glGetDoublev( GL_PROJECTION_MATRIX, projection );
-                glGetIntegerv( GL_VIEWPORT, viewport );
-
-                winX = (float)pt.x;
-                winY = (float)viewport[3] - (float)pt.y;
-                glReadPixels( pt.x, int(winY), 1, 1, GL_DEPTH_COMPONENT, GL_FLOAT, &winZ );
-
-                gluUnProject( winX, winY, winZ, modelview, projection, viewport, &posX, &posY, &posZ);
-
-
-//                CString Info ;
-//                CWnd *pWnd = ::AfxGetMainWnd();
-//                Info.Format("X = %lf, Y = %lf, Z = %lf",	posX, posY, posZ);
-//                //Info.Format("X = %d, Y = %d", pt.x, pt.y);
-//                pWnd->SetWindowText(Info.GetBuffer(0));
+                QList<uint> ID_list = model->Get_ID_list();
+                QListIterator<uint>it(ID_list);
+                while(it.hasNext())
+                {
+                    glCallList(it.next());
+                }
 
             }
-
-            //m_Camera.UpdateView(1);
-//            //Draw Sketch
-//            if(pDoc->m_bShowUserEdge)
-//            {
-//                m_SketchLine.Display();
-//            }
-            //Draw Object
-//            if(pDoc->m_bShowObject)
-//            {
-//                glCallList(pDoc->m_ObjectList);
-//            }
-        if(model->Get_full_index()!=0)
-        {
-
-            glCallList(model->Get_selected_info()->m_ObjectList);
-        }
       }
         //Draw coordinate indicator
-        if(loop == 2)
+        if(loop == 2&& coordinate_enable)
         {
             camera->UpdateView();
             glDisable(GL_LIGHTING);
@@ -165,6 +134,7 @@ void ModelView::paintGL()
             glBegin(GL_LINES);
                 glVertex3f(0.0f, 0.0f, 0.0f);
                 glVertex3f(1.2f, 0.0f, 0.0f);
+                glLineWidth(3);
             glEnd();
 
             //Draw y axis
@@ -172,6 +142,7 @@ void ModelView::paintGL()
             glBegin(GL_LINES);
                 glVertex3f(0.0f, 0.0f, 0.0f);
                 glVertex3f(0.0f, 1.2f, 0.0f);
+                glLineWidth(3);
             glEnd();
 
             //Draw z axis
@@ -179,6 +150,7 @@ void ModelView::paintGL()
             glBegin(GL_LINES);
                 glVertex3f(0.0f, 0.0f, 0.0f);
                 glVertex3f(0.0f, 0.0f, 1.2f);
+                glLineWidth(3);
             glEnd();
 
             glColor3ub(129, 129, 129);

@@ -13,10 +13,6 @@ public:
     QAction *Close_file;
     QAction *Exit_Window;
     QAction* Save_file;
-private slots:
-    void open_file();
-    void close_file();
-    void save_file();
 };
 
 #endif // FILE_TB_H
