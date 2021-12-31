@@ -6,6 +6,7 @@
 #include "modelview.h"
 class QDockWidget;
 class MainModel;
+class SideDialog;
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -20,7 +21,7 @@ public slots:
     void close_obj();
 private:
     QDockWidget * Top_Dock;
-    QDockWidget *Right_Dock;
+    SideDialog* side_dialog;
     MainModel * model;
     ModelView * model_veiw;
 

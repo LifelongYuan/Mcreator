@@ -3,6 +3,22 @@
 
 #include<QOpenGLFunctions>
 #include<QOpenGLWidget>
+class Model_info
+{
+public:
+    GLuint m_ObjectList;   //model_list after pre-rendering
+    QString file_name;   // unique label for the file.
+    QString absolute_path;
+    bool visibility;
+    GLuint numvertices;
+    GLuint numnormals;
+    GLuint   numtexcoords;
+    GLuint   numfacetnorms;
+    GLuint   numtriangles;
+    GLuint   nummaterials;
+
+    //TODO add more properties.
+};
 enum { X, Y, Z, W };
 #define GLM_NONE     (0)		    /* render with only vertices */
 #define GLM_FLAT     (1 << 0)		/* render with facet normals */
@@ -47,6 +63,7 @@ typedef struct _GLMmaterial
 class GeomModel
 {
 public:
+    void save_para_to_model_config(Model_info* );
     GeomModel();
     GLvoid glmWeld(GLfloat epsilon);
     GLuint glmList(GLuint mode);

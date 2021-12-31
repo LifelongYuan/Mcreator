@@ -57,6 +57,7 @@ uint MainModel::Add_Model_file_from_path(QString FilePath)
         new_model_info->file_name = file_info.fileName();
         new_model_info->absolute_path = file_info.filePath();
         new_model_info->m_ObjectList = m_GeomModelObject->glmList(GLM_SMOOTH | GLM_MATERIAL);
+        m_GeomModelObject->save_para_to_model_config(new_model_info);
         new_model_info->visibility = true;
         this->model_list.insert(new_model_info->file_name,new_model_info);
         this->selected_key = new_model_info->file_name;  //auto selected
@@ -186,4 +187,9 @@ QList<uint> MainModel::Get_ID_list()
         ID_list.append(it.value()->m_ObjectList);
     }
     return ID_list;
+}
+
+void MainModel::Change_selected_key(QString name)
+{
+    this->selected_key = name;
 }

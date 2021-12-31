@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "multi_toolbar.h"
 #include "mainmodel.h"
-#include "sidetoolbar.h"
 #include "geommodel.h"
 #include<QDockWidget>
 #include<QTabWidget>
@@ -10,43 +9,28 @@
 #include<QMessageBox>
 #include "GL/glu.h"
 #include "GL/glut.h"
+#include "sidedialog.h"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
    Multi_Toolbar * main_tool_bar = new Multi_Toolbar(this);
+
    Top_Dock = new QDockWidget();
    Top_Dock->setWidget(main_tool_bar);
-    Right_Dock = new QDockWidget();
-
    QWidget *oldTitalbar = Top_Dock->titleBarWidget();
    QWidget *newTitalbar = new QWidget();
    Top_Dock->setTitleBarWidget(newTitalbar);
-//   Right_Dock->setTitleBarWidget(newTitalbar);
    delete oldTitalbar;
-
    this->addDockWidget(Qt::TopDockWidgetArea,Top_Dock);
-   this->addDockWidget(Qt::RightDockWidgetArea,Right_Dock);
-   this->setWindowState(Qt::WindowMaximized);
-//   QAction* open = new QAction(tr("&Open"),this);
-//   connect(open,SIGNAL(triggered()),this,SLOT(open()));
-   model = new MainModel;
-//   main_tool_bar->Top_tb_map->value("File")->addAction(open);
-   model_veiw = new ModelView(model);
-//   model_veiw->setModel(model);
-   setCentralWidget(model_veiw);
-    sidetoolbar * side_tool_bar = new sidetoolbar(model_veiw);
-    QTreeWidget *tree = new QTreeWidget;
-    QTreeWidgetItem * a = new QTreeWidgetItem();
-    a->setText(0,"fuck");
-    tree->addTopLevelItem(a);
-    tree->setParent(Right_Dock);
-//    ModelView *model_small = new ModelView(model);
-//    model_small->setMinimumSize(20,20);
-//    model_small->setMaximumSize(70,70);
-//    tree->setItemWidget(a,0,model_small);
-//    Right_Dock->setWidget(tree);
-//    Right_Dock->setWidget(side_tool_bar);
 
+   this->setWindowState(Qt::WindowMaximized);
+
+   model = new MainModel;
+   model_veiw = new ModelView(model);
+   setCentralWidget(model_veiw);
+
+   side_dialog = new SideDialog(model);
+   addDockWidget(Qt::RightDockWidgetArea,side_dialog);
 }
 
 void MainWindow::open()
@@ -67,6 +51,8 @@ void MainWindow::open()
 
                    }
                    model_veiw->update();
+                   side_dialog->update_table();
+//                   side_dialog->setVisible(true);
 
            } else {
                    QMessageBox::information(NULL, tr("ohps"), tr("You didn't select any files."));
@@ -99,6 +85,7 @@ void MainWindow::close_obj()
         QString f_n = model->Get_selected_info()->file_name;
         model->Remove_info_from_name(f_n);
         model_veiw->update();
+        side_dialog->update_table();
     }
 
 }

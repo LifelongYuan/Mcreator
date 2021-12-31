@@ -2,7 +2,6 @@ QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++11
-
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
@@ -15,10 +14,11 @@ SOURCES += \
     main.cpp \
     mainmodel.cpp \
     mainwindow.cpp \
+    meshtreeitem.cpp \
     modelview.cpp \
     multi_toolbar.cpp \
     preview.cpp \
-    sidetoolbar.cpp
+    sidedialog.cpp
 
 HEADERS += \
     ccamera.h \
@@ -27,10 +27,11 @@ HEADERS += \
     geommodel.h \
     mainmodel.h \
     mainwindow.h \
+    meshtreeitem.h \
     modelview.h \
     multi_toolbar.h \
     preview.h \
-    sidetoolbar.h
+    sidedialog.h
 
 LIBS += -lOpengl32 \
         -lglu32 \

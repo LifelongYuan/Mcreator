@@ -8,7 +8,15 @@ GeomModel::GeomModel()
 {
 
 }
-
+void GeomModel::save_para_to_model_config(Model_info* a)
+{
+    a->numfacetnorms = numfacetnorms;
+    a->nummaterials  = nummaterials;
+    a->numnormals = numnormals;
+    a->numtexcoords = numtexcoords;
+    a->numtriangles = numtriangles;
+    a->numvertices = numvertices;
+}
 GeomModel::~GeomModel()
 {
 
