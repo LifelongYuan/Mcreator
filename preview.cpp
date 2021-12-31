@@ -1,25 +1,17 @@
-#include "modelview.h"
-ModelView::ModelView(MainModel* model,QWidget *parent): QOpenGLWidget(parent)
+#include "preview.h"
+
+PreView::PreView(MainModel* model,QString model_name,QWidget *parent)
+    : QOpenGLWidget(parent)
 {
-    this->setModel(model);
+    this->model_info = model->Get_info_from_name(model_name);
     this->camera = new CCamera;
 }
-ModelView::ModelView(const ModelView& input):QOpenGLWidget(),QOpenGLFunctions()
+
+Model_info* PreView::get_Model_information(void)
 {
-//    this->window_height = input.window_height;
-//    this->window_width = input.window_width;
-    this->model = input.model;
-    this->camera = input.camera;
+    return model_info;
 }
-void ModelView::setModel(MainModel* model)
-{
-    this->model = model;
-}
-MainModel* ModelView::getModel_p(void)
-{
-    return this->model;
-}
-void ModelView::initializeGL()
+void PreView::initializeGL()
 {
     this->initializeOpenGLFunctions();
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -37,7 +29,7 @@ void ModelView::initializeGL()
     glEnable(GL_CULL_FACE);
 
 }
-void ModelView::SetupLighting()
+void PreView::SetupLighting()
 {
     GLfloat light_pos[] = {2.0f, 2.0f, 2.0f, 1.0f};
     GLfloat light_Ka[] = {0.0f, 0.0f, 0.0f, 1.0f};
@@ -55,13 +47,13 @@ void ModelView::SetupLighting()
     glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 }
 
-void ModelView::resizeGL(int w, int h)
+void PreView::resizeGL(int w, int h)
 {
     glViewport(0.0f,0.0f,w,h);
     window_width = w;
     window_height = h;
 }
-void ModelView::paintGL()
+void PreView::paintGL()
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
     for(int loop = 0; loop < 3; loop++)
@@ -115,17 +107,8 @@ void ModelView::paintGL()
        // Draw object
        if(loop == 1)
         {
-            camera->UpdateView(1);
-            if(model->Get_full_index()!=0)
-            {
-                QList<uint> ID_list = model->Get_ID_list();
-                QListIterator<uint>it(ID_list);
-                while(it.hasNext())
-                {
-                    glCallList(it.next());
-                }
-
-            }
+           camera->UpdateView(1);
+           glCallList(model_info->m_ObjectList);
       }
         //Draw coordinate indicator
         if(loop == 2&& coordinate_enable)
@@ -171,25 +154,4 @@ void ModelView::paintGL()
     }
 
     glFlush();
-}
-
-void ModelView::mousePressEvent(QMouseEvent *event)
-{
-    camera->SetMouseDownPoint(event->pos());
-}
-
-void ModelView::mouseReleaseEvent(QMouseEvent *event)
-{
-    camera->SetMouseDownPoint(QPoint(0,0));
-}
-
-void ModelView::mouseMoveEvent(QMouseEvent *event)
-{
-    camera->UpdateAngle(event->pos());
-    this->update();
-}
-void ModelView::wheelEvent(QWheelEvent *event)
-{
-    camera->UpdateDistance(event->delta());
-    this->update();
 }

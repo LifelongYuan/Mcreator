@@ -14,11 +14,13 @@ class ModelView:public QOpenGLWidget,protected QOpenGLFunctions
 public:
     ModelView(MainModel* ,QWidget *parent=0);
     ModelView(const ModelView&);
-    void setModel(MainModel*);
+
+    MainModel * getModel_p(void);
     BOOL m_bDrawing=true;
     BOOL backgroud_enable = true;
     BOOL coordinate_enable = true;
 protected:
+  void setModel(MainModel*);
   void initializeGL() override;
   void resizeGL(int w, int h) override;
   void paintGL() override;

@@ -55,6 +55,7 @@ uint MainModel::Add_Model_file_from_path(QString FilePath)
     {
         Model_info * new_model_info = new Model_info;
         new_model_info->file_name = file_info.fileName();
+        new_model_info->absolute_path = file_info.filePath();
         new_model_info->m_ObjectList = m_GeomModelObject->glmList(GLM_SMOOTH | GLM_MATERIAL);
         new_model_info->visibility = true;
         this->model_list.insert(new_model_info->file_name,new_model_info);
@@ -64,6 +65,53 @@ uint MainModel::Add_Model_file_from_path(QString FilePath)
     //Nuke the object
     m_GeomModelObject->glmDelete();
     return mode_status;
+}
+uint MainModel::Get_detailed_data_from_path(QString FilePath)
+{
+    GLfloat scalefactor = 0.0;
+
+    //Load Object from file
+//	GLMmodel *object;
+    m_GeomModelObject = new GeomModel;
+
+//	m_GeomObject = glmReadOBJ(FilePath.GetBuffer(0));
+//    std::string str = FilePath.toStdString();
+    QTextCodec *code = QTextCodec::codecForName("GB2312");
+     std::string name = code->fromUnicode(FilePath).data();
+    char* ch = (char*)name.c_str();
+    m_GeomModelObject->glmReadOBJ(ch);
+
+    if(! scalefactor)
+    {
+        //Create Unit vectors
+//		scalefactor = glmUnitize( m_GeomObject);
+        scalefactor = m_GeomModelObject->glmUnitize();
+    }
+    else
+    {
+        //Scale object properly
+//		glmScale(m_GeomObject, scalefactor);
+        m_GeomModelObject->glmScale(scalefactor);
+    }
+
+    //Scale object
+
+    m_GeomModelObject->glmScale(1.0);
+    m_GeomModelObject->glmFacetNormals();
+    return Success;
+}
+
+uint MainModel::Save_Selected_Model_file_to_path(QString file_out_path)
+{
+    QString f_p = this->Get_selected_info()->absolute_path;
+    this->Get_detailed_data_from_path(f_p);
+    GLuint mode = GLM_NONE;
+
+    QTextCodec *code = QTextCodec::codecForName("GB2312");
+    std::string name = code->fromUnicode(file_out_path).data();
+    char* ch = (char*)name.c_str();
+    m_GeomModelObject->glmWriteOBJ(ch,mode);
+    return Success;
 }
 
 
@@ -105,8 +153,13 @@ MainModel::~MainModel()
 }
 
 void MainModel::Remove_info_from_name(QString file_name)
-{
+{   Model_info* m_f = this->Get_info_from_name(file_name);
+    glDeleteLists(m_f->m_ObjectList,1);
     this->model_list.remove(file_name);
+    if(model_list.size()!=0)
+    {
+    this->selected_key = model_list.begin().key();
+    }
 }
 
 QStringList MainModel::Get_info_name_list()

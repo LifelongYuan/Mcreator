@@ -17,6 +17,7 @@ SOURCES += \
     mainwindow.cpp \
     modelview.cpp \
     multi_toolbar.cpp \
+    preview.cpp \
     sidetoolbar.cpp
 
 HEADERS += \
@@ -28,6 +29,7 @@ HEADERS += \
     mainwindow.h \
     modelview.h \
     multi_toolbar.h \
+    preview.h \
     sidetoolbar.h
 
 LIBS += -lOpengl32 \

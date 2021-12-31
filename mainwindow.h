@@ -16,6 +16,8 @@ public:
     void DrawScene();
 public slots:
     void open();
+    void save();
+    void close_obj();
 private:
     QDockWidget * Top_Dock;
     QDockWidget *Right_Dock;

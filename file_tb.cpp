@@ -22,6 +22,8 @@ File_tb::File_tb(const QString &title, QWidget *parent)
 
     connect(Exit_Window,SIGNAL(triggered()),this->parentWidget()->parentWidget(),SLOT(close()));
     connect(Open_file,SIGNAL(triggered()),this->parentWidget()->parentWidget(),SLOT(open()));
+    connect(Save_file,SIGNAL(triggered()),this->parentWidget()->parentWidget(),SLOT(save()));
+    connect(Close_file,SIGNAL(triggered()),this->parentWidget()->parentWidget(),SLOT(close_obj()));
     this->addAction(Open_file);
     this->addAction(Close_file);
     this->addAction(Save_file);

@@ -35,7 +35,17 @@ MainWindow::MainWindow(QWidget *parent)
 //   model_veiw->setModel(model);
    setCentralWidget(model_veiw);
     sidetoolbar * side_tool_bar = new sidetoolbar(model_veiw);
-    Right_Dock->setWidget(side_tool_bar);
+    QTreeWidget *tree = new QTreeWidget;
+    QTreeWidgetItem * a = new QTreeWidgetItem();
+    a->setText(0,"fuck");
+    tree->addTopLevelItem(a);
+    tree->setParent(Right_Dock);
+//    ModelView *model_small = new ModelView(model);
+//    model_small->setMinimumSize(20,20);
+//    model_small->setMaximumSize(70,70);
+//    tree->setItemWidget(a,0,model_small);
+//    Right_Dock->setWidget(tree);
+//    Right_Dock->setWidget(side_tool_bar);
 
 }
 
@@ -50,16 +60,48 @@ void MainWindow::open()
                    QFileInfo file_info = QFileInfo(path);
                    file_info.fileName();
                    QMessageBox::information(NULL, tr("Path"), tr("You selected ") + path);
-                   model->Add_Model_file_from_path(path);
+                   uint status = model->Add_Model_file_from_path(path);
+                   if(status==Repeat)
+                   {
+                       QMessageBox::information(NULL, tr("ohps"), tr("Do not repeat opening the same file!"));
+
+                   }
                    model_veiw->update();
 
            } else {
-                   QMessageBox::information(NULL, tr("Path"), tr("You didn't select any files."));
+                   QMessageBox::information(NULL, tr("ohps"), tr("You didn't select any files."));
 
                    }
 }
 
+void MainWindow::save()
+{
+    if(model->Get_info_list().size()==0)
+    {
+        QMessageBox::information(NULL, tr("ohps"), tr("Nothing to save!"));
+    }
+    else
+    {
+        QString fileName = QFileDialog::getSaveFileName(this);
+        if (!fileName.isEmpty())
+            model->Save_Selected_Model_file_to_path(fileName);
+    }
 
+}
+void MainWindow::close_obj()
+{
+    if(model->Get_info_list().size()==0)
+    {
+        QMessageBox::information(NULL, tr("ohps"), tr("Nothing to close!"));
+    }
+    else
+    {
+        QString f_n = model->Get_selected_info()->file_name;
+        model->Remove_info_from_name(f_n);
+        model_veiw->update();
+    }
+
+}
 MainWindow::~MainWindow()
 {
 }
