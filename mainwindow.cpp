@@ -7,6 +7,7 @@
 #include<QAction>
 #include<QFileDialog>
 #include<QMessageBox>
+#include<QStatusBar>
 #include "GL/glu.h"
 #include "GL/glut.h"
 #include "sidedialog.h"
@@ -14,7 +15,8 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
    Multi_Toolbar * main_tool_bar = new Multi_Toolbar(this);
-
+    QStatusBar *status = new QStatusBar;
+    setStatusBar(status);
    Top_Dock = new QDockWidget();
    Top_Dock->setWidget(main_tool_bar);
    QWidget *oldTitalbar = Top_Dock->titleBarWidget();
